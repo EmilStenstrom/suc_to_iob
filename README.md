@@ -4,8 +4,7 @@ Convert the [SUC 3.0](https://spraakbanken.gu.se/swe/resurs/suc3) corpus from a 
 
 ```
 $ python suc_to_iob.py --help
-usage: suc_to_iob.py [-h] [--detail {UNNAMED,NAMED,NAMED_DETAILED}]
-                     [--skiptypes SKIPTYPES [SKIPTYPES ...]]
+usage: suc_to_iob.py [-h] [--skiptypes SKIPTYPES [SKIPTYPES ...]]
                      infile
 
 positional arguments:
@@ -14,8 +13,6 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  --detail {UNNAMED,NAMED,NAMED_DETAILED}
-                        Detail level that the file should be output in.
   --skiptypes SKIPTYPES [SKIPTYPES ...]
                         Entity types that should be skipped in output.
 ```
@@ -27,11 +24,6 @@ The SUC 3.0 Corpus can be downloaded from https://spraakbanken.gu.se/swe/resurs/
 Normal usage (No need to unzip the corpus):
 ```
 $ python suc_to_iob.py suc3.xml.bz2 > suc_3.0_iob.txt
-```
-
-Include the more specific labels from SUC in the output:
-```
-$ python suc_to_iob.py suc3.xml.bz2 --detail NAMED_DETAILED > suc_3.0_iob.txt
 ```
 
 Skip some labels from the output:

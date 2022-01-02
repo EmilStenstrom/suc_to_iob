@@ -1,14 +1,8 @@
 from bz2 import BZ2File
 from xml.etree.ElementTree import iterparse
-from enum import Enum, auto
 import argparse
 
-class ParseDetail(Enum):
-    UNNAMED = auto()
-    NAMED = auto()
-    NAMED_DETAILED = auto()
-
-def parse(fp, parse_detail=ParseDetail.NAMED, skiptypes=[]):
+def parse(fp, skiptypes=[]):
     root = None
     ne_type = "O"
     ne_prefix = ""
@@ -20,13 +14,7 @@ def parse(fp, parse_detail=ParseDetail.NAMED, skiptypes=[]):
             yield "\n"
 
         if event == "start" and elem.tag == "ne" and elem.attrib["type"] not in skiptypes:
-            if parse_detail == ParseDetail.UNNAMED:
-                ne_type = "LABEL"
-            elif parse_detail == ParseDetail.NAMED:
-                ne_type = elem.attrib["type"]
-            elif parse_detail == ParseDetail.NAMED_DETAILED:
-                ne_type = elem.attrib["type"] + "-" + elem.attrib["subtype"]
-
+            ne_type = elem.attrib["type"]
             ne_prefix = "B-"
 
         if event == "end" and elem.tag == "ne":
@@ -51,12 +39,6 @@ def main():
         """
     )
     parser.add_argument(
-        "--detail",
-        help="Detail level that the file should be output in.",
-        choices=[e.name for e in ParseDetail],
-        default="NAMED"
-    )
-    parser.add_argument(
         "--skiptypes",
         help="Entity types that should be skipped in output.",
         nargs="+",
@@ -73,7 +55,7 @@ def main():
     else:
         fp = open(args.infile, "rb")
 
-    for line in parse(fp, parse_detail=ParseDetail[args.detail], skiptypes=args.skiptypes):
+    for line in parse(fp, skiptypes=args.skiptypes):
         print(line, end="")
 
     fp.close()
