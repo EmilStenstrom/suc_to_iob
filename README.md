@@ -1,6 +1,6 @@
 # SUC to IOB2 Converter
 
-Convert the freely available Stockholm-Umeå-korpus 3.0 ([SUC 3.0](https://spraakbanken.gu.se/swe/resurs/suc3)) corpus from a custom format to [IOB2](https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging)) for use in training Swedish [NER](https://en.wikipedia.org/wiki/Named-entity_recognition) applications.
+Convert the freely available Stockholm-Umeå-korpus 3.0 ([SUC 3.0](https://spraakbanken.gu.se/en/resources/suc3)) corpus from a custom format to [IOB2](https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging)) for use in training Swedish [NER](https://en.wikipedia.org/wiki/Named-entity_recognition) applications.
 
 The SUC 3.0 Corpus can be downloaded from https://spraakbanken.gu.se/swe/resurs/suc3
 
