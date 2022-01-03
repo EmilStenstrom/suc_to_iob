@@ -16,6 +16,59 @@ Skip some labels from the output:
 $ python suc_to_iob.py suc3.xml.bz2 --skiptypes MSR TME > suc_3.0_iob.txt
 ```
 
+This will convert a file with a format like:
+
+```xml
+<corpus id="suc3">
+  <text ...>
+    <sentence ...>
+      <w ...>I</w>
+      <w ...>sin</w>
+      <w ...>första</w>
+      <w ...>reaktion</w>
+      <w ...>på</w>
+      <w ...>Sovjetledarens</w>
+      <w ...>varningar</w>
+      <w ...>deklarerade</w>
+      <ne ex="ENAMEX" name="Litauens" subtype="PPL" type="LOC">
+        <name type="inst">
+          <w ...>Litauens</w>
+        </name>
+      </ne>
+      ...
+```
+
+To IOB2 format that looks like this:
+
+    I	O
+    sin	O
+    första	O
+    reaktion	O
+    på	O
+    Sovjetledarens	O
+    varningar	O
+    deklarerade	O
+    Litauens	B-LOC
+    president	O
+    Vytautas	B-PRS
+    Landsbergis	I-PRS
+    ...
+
+## Available tags
+
+All name types are mapped to ne types, to produce the following set of existing tags (number of occurances within parentisis):
+
+* TME (25967) - Time unit
+* PRS (22874) - Person
+* LOC (12076) - Location
+* ORG (8224) - Organization
+* MSR (6061) - Meassurement
+* WRK (5055) - Work of art
+* OBJ (1085) - Object
+* EVN (642) - Event
+* ANI (464) - Animal
+* MYT (301) - Mythological
+
 ## Clarification on the SUC 3.0 License
 
 There are two versions of the SUC 3.0 corpus. One with the original texts mantained, and one with the sentences scrambled. The scrambled version has also been enhanced with automated tags using an automated tool (see below).
@@ -66,19 +119,3 @@ This script parses both kinds of tags into one IOB file using the following heur
 5. ´<name>´ this just means the tag was not found automatically
 6. TME is not manually tagged, but exists as ´<ne>´, so this rule makes sure those are included too.
 7. When the automated tagger is unsure it can output two tags denoted by a slash. Since we prioritize name tags, this rarely happens, and when manually inspecting the remaining tags the second tag was a better fit, so this rule uses that tag.
-
-### Available tags
-
-All name types are mapped to ne types, to produce the following set of existing tags (number of occurances within parentisis):
-
-* TME (25967) - Time unit
-* PRS (22874) - Person
-* LOC (12076) - Location
-* ORG (8224) - Organization
-* MSR (6061) - Meassurement
-* WRK (5055) - Work of art
-* OBJ (1085) - Object
-* EVN (642) - Event
-* ANI (464) - Animal
-* MYT (301) - Mythological
-
