@@ -1,7 +1,33 @@
+"""
+Conversion tool to transform SUC3's xml format to IOB
+
+Copyright 2017-2022, Emil Stenström
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
 from bz2 import BZ2File
 from xml.etree.ElementTree import iterparse
 import argparse
 from collections import Counter
+import sys
 
 def parse(fp, skiptypes=[]):
     types = Counter()
@@ -86,7 +112,7 @@ def name_type_to_ne_type(name_type):
     }
     return mapping.get(name_type)
 
-def main():
+def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "infile",
@@ -96,12 +122,20 @@ def main():
         """
     )
     parser.add_argument(
+        "outfile",
+        nargs="?",
+        help="""
+             Output file for IOB format.
+             Optional - will print to stdout otherwise
+        """
+    )
+    parser.add_argument(
         "--skiptypes",
         help="Entity types that should be skipped in output.",
         nargs="+",
         default=[]
     )
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     MAGIC_BZ2_FILE_START = b"\x42\x5a\x68"
     fp = open(args.infile, "rb")
@@ -112,14 +146,21 @@ def main():
     else:
         fp = open(args.infile, "rb")
 
+    if args.outfile is not None:
+        fout = open(args.outfile, "w", encoding="utf-8")
+    else:
+        fout = sys.stdout
+
     for token in parse(fp, skiptypes=args.skiptypes):
         if not token:
-            """ print() """
+            fout.write("\n")
         else:
             word, prefix, label = token
-            """ print(word + "\t" + prefix + label) """
+            fout.write("%s\t%s%s\n" % (word, prefix, label))
 
     fp.close()
+    if args.outfile is not None:
+        fout.close()
 
 
 if __name__ == '__main__':
