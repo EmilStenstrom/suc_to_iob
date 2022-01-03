@@ -97,25 +97,25 @@ Here's a translated excerpt from an e-mail from  clarifying this:
 
 The SUC 3.0 Corpus has two ways to indicate named entities.
 
-* Tags that are manually annotated as ´<name type=X>´
-* Tags that are automatically annotated as as ´<ne type=X>´
+* Tags that are manually annotated as `<name type=X>`
+* Tags that are automatically annotated as as `<ne type=X>`
 
 This script parses both kinds of tags into one IOB file using the following heuristics:
 
-1. If an entity is wrapped in both ´<name>´ and ´<ne>´, use ´<name>´
-2. ... except when ´<name type="inst">´ and ´<ne type="LOC">´, use ´<ne>´.
-3. ... except when ´<name type="person">´ and a part of it is a noun, use ´<ne>´.
-4. ... except when ´<name type="other">´, use ´<ne>´.
-5. If only ´<name>´, use ´<name>´
-6. If only ´<ne>´, use ´<ne>´
+1. If an entity is wrapped in both `<name>` and `<ne>`, use `<name>`
+2. ... except when `<name type="inst">` and `<ne type="LOC">`, use `<ne>`.
+3. ... except when `<name type="person">` and a part of it is a noun, use `<ne>`.
+4. ... except when `<name type="other">`, use `<ne>`.
+5. If only `<name>`, use `<name>`
+6. If only `<ne>`, use `<ne>`
 7. If there are multiple types denoted by "/", as in "LOC/PRS", use the last type
 
 ### Explaination
 
-1. ´<name>´ is manually annotated, so safer to use when possible
+1. `<name>` is manually annotated, so safer to use when possible
 2. Many countries are annotated as institutions, but the automated tagging is correct, so use that one instead.
 3. Some persons include their title, such as "morbror Ture" or "fänrik Brack". This rule removes the noun from the tag to just "Ture" and "Brack" are tagged.
 4. Other tags are often better specified by the automated tagger
-5. ´<name>´ this just means the tag was not found automatically
-6. TME is not manually tagged, but exists as ´<ne>´, so this rule makes sure those are included too.
+5. `<name>` this just means the tag was not found automatically
+6. TME is not manually tagged, but exists as `<ne>`, so this rule makes sure those are included too.
 7. When the automated tagger is unsure it can output two tags denoted by a slash. Since we prioritize name tags, this rarely happens, and when manually inspecting the remaining tags the second tag was a better fit, so this rule uses that tag.
