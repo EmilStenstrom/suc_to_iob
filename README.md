@@ -81,13 +81,21 @@ Here's a translated excerpt from an e-mail from  clarifying this:
     Subject: Re: Licensing SUC 3.0
     Date: Tuesday, September 29, 2020 14:20
 
-    Since the scrambled version is licensed under CC-BY, you do not need another license to use it for training.
+    Since the scrambled version is licensed under CC-BY, you do not need
+    another license to use it for training.
 
-    However, if you use the original SUC (ie, the non-scrambled version), you will need a SUC license.
+    However, if you use the original SUC (ie, the non-scrambled version),
+    you will need a SUC license.
 
-    If we assume that it is not possible to recreate your training data based on the model, then our interpretation is that you do not need a license at all to distribute it further.
+    If we assume that it is not possible to recreate your training data
+    based on the model, then our interpretation is that you do not need
+    a license at all to distribute it further.
 
-    However, for other reasons it is probably a good idea to describe the data you have trained the model with. This is so that the user of your model can know how good / bad the model can be thought to be in different contexts. (For example, I can imagine that a SUC-trained model is not the best for analyzing texts from social media).
+    However, for other reasons it is probably a good idea to describe
+    the data you have trained the model with. This is so that the user
+    of your model can know how good / bad the model can be thought to be
+    in different contexts. (For example, I can imagine that a SUC-trained
+    model is not the best for analyzing texts from social media).
 
     Peter Ljunglöf
     data- och informationsteknik, och språkbanken
