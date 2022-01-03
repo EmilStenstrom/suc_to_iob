@@ -19,20 +19,18 @@ optional arguments:
 
 The SUC 3.0 Corpus can be downloaded from https://spraakbanken.gu.se/swe/resurs/suc3
 
-## Algoritm
+## Algorithm
 
 The SUC 3.0 Corpus has two ways to indicate named entities.
 
 * Tags that are manually annotated as ´<name type=X>´
 * Tags that are automatically annotated as as ´<ne type=X>´
 
-The ´<ne>´ tags are often more specific, selecting a stricter span of words.
-
 This script parses both kinds of tags into one IOB file using the following heuristics:
 
 1. If an entity is wrapped in both ´<name>´ and ´<ne>´, use ´<name>´
 2. ... except when ´<name type="inst">´ and ´<ne type="LOC">´, use ´<ne>´.
-3. ... except when ´<name type="person">´ and the word is of type "frändskap" or "överordnad", use ´<ne>´.
+3. ... except when ´<name type="person">´ and a part of it is a noun, use ´<ne>´.
 4. ... except when ´<name type="other">´ and ´<ne type="ORG">´, use ´<ne>´.
 5. If only ´<name>´, use ´<name>´
 6. If only ´<ne>´, use ´<ne>´
