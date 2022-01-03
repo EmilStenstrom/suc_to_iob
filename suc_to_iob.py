@@ -114,10 +114,10 @@ def main():
 
     for token in parse(fp, skiptypes=args.skiptypes):
         if not token:
-            """ print() """
+            print()
         else:
             word, prefix, label = token
-            """ print(word + "\t" + prefix + label) """
+            print(word + "\t" + prefix + label)
 
     fp.close()
 
