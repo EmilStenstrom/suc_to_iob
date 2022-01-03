@@ -1,33 +1,90 @@
 from bz2 import BZ2File
 from xml.etree.ElementTree import iterparse
 import argparse
+from collections import Counter
 
 def parse(fp, skiptypes=[]):
+    types = Counter()
+
     root = None
-    ne_type = "O"
     ne_prefix = ""
+    ne_type = "O"
+    name_prefix = ""
+    name_type = "O"
+
     for event, elem in iterparse(fp, events=("start", "end")):
         if root is None:
             root = elem
 
-        if event == "end" and elem.tag == "sentence":
-            yield "\n"
+        if event == "start":
+            if elem.tag == "name":
+                _type = name_type_to_ne_type(elem.attrib["type"])
+                if (
+                    _type not in skiptypes and
+                    not (_type == "ORG" and ne_type == "LOC")
+                ):
+                    name_type = _type
+                    name_prefix = "B-"
 
-        if event == "start" and elem.tag == "ne" and elem.attrib["type"] not in skiptypes:
-            ne_type = elem.attrib["type"]
-            ne_prefix = "B-"
+            elif elem.tag == "ne":
+                _type = elem.attrib["type"]
+                if "/" in _type:
+                    _type = _type[_type.index("/") + 1:]
 
-        if event == "end" and elem.tag == "ne":
-            ne_type = "O"
-            ne_prefix = ""
+                if _type not in skiptypes:
+                    ne_type = _type
+                    ne_prefix = "B-"
 
-        if event == "end" and elem.tag == "w":
-            yield elem.text + "\t" + ne_prefix + ne_type + "\n"
+            elif elem.tag == "w":
+                if name_type == "PRS" and elem.attrib["pos"] == "NN":
+                    name_type = "O"
+                    name_prefix = ""
 
-            if ne_type != "O":
-                ne_prefix = "I-"
+        elif event == "end":
+            if elem.tag == "sentence":
+                yield
+
+            elif elem.tag == "name":
+                name_type = "O"
+                name_prefix = ""
+
+            elif elem.tag == "ne":
+                ne_type = "O"
+                ne_prefix = ""
+
+            elif elem.tag == "w":
+                if name_type != "O" and name_type != "OTH":
+                    types[name_type] += 1
+                    yield elem.text, name_prefix, name_type
+                elif ne_type != "O":
+                    types[ne_type] += 1
+                    yield elem.text, ne_prefix, ne_type
+                else:
+                    yield elem.text, "", "O"
+
+                if ne_type != "O":
+                    ne_prefix = "I-"
+
+                if name_type != "O":
+                    name_prefix = "I-"
 
         root.clear()
+
+    print(types)
+
+def name_type_to_ne_type(name_type):
+    mapping = {
+        "inst": "ORG",
+        "product": "OBJ",
+        "other": "OTH",
+        "place": "LOC",
+        "myth": "MYT",
+        "person": "PRS",
+        "event": "EVN",
+        "work": "WRK",
+        "animal": "ANI",
+    }
+    return mapping.get(name_type)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -55,8 +112,12 @@ def main():
     else:
         fp = open(args.infile, "rb")
 
-    for line in parse(fp, skiptypes=args.skiptypes):
-        print(line, end="")
+    for token in parse(fp, skiptypes=args.skiptypes):
+        if not token:
+            """ print() """
+        else:
+            word, prefix, label = token
+            """ print(word + "\t" + prefix + label) """
 
     fp.close()
 
