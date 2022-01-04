@@ -130,6 +130,12 @@ def main(args=None):
         nargs="+",
         default=[]
     )
+    parser.add_argument(
+        "--stats_only",
+        help="Show statistics of found labels at the end of output.",
+        action='store_true',
+        default=False
+    )
     args = parser.parse_args(args)
 
     MAGIC_BZ2_FILE_START = b"\x42\x5a\x68"
@@ -146,12 +152,20 @@ def main(args=None):
     else:
         fout = sys.stdout
 
+    type_stats = Counter()
     for token in parse(fp, skiptypes=args.skiptypes):
         if not token:
-            fout.write("\n")
+            if not args.stats_only:
+                fout.write("\n")
         else:
             word, prefix, label = token
-            fout.write("%s\t%s%s\n" % (word, prefix, label))
+            if args.stats_only:
+                type_stats[label] += 1
+            else:
+                fout.write("%s\t%s%s\n" % (word, prefix, label))
+
+    if args.stats_only:
+        fout.write(type_stats)
 
     fp.close()
     if args.outfile is not None:
