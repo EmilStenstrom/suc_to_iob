@@ -42,7 +42,7 @@ def parse(fp, skiptypes=[]):
 
         if event == "start":
             if elem.tag == "name":
-                _type = name_type_to_ne_type(elem.attrib["type"])
+                _type = name_type_to_label(elem.attrib["type"])
                 if (
                     _type not in skiptypes and
                     not (_type == "ORG" and ne_type == "LOC")
@@ -51,16 +51,16 @@ def parse(fp, skiptypes=[]):
                     name_prefix = "B-"
 
             elif elem.tag == "ne":
-                _type = elem.attrib["type"]
+                _type = ne_type_to_label(elem.attrib["type"])
                 if "/" in _type:
-                    _type = _type[_type.index("/") + 1:]
+                    _type = ne_type_to_label(_type[_type.index("/") + 1:])
 
                 if _type not in skiptypes:
                     ne_type = _type
                     ne_prefix = "B-"
 
             elif elem.tag == "w":
-                if name_type == "PRS" and elem.attrib["pos"] == "NN":
+                if name_type == "PER" and elem.attrib["pos"] == "NN":
                     name_type = "O"
                     name_prefix = ""
 
@@ -92,18 +92,23 @@ def parse(fp, skiptypes=[]):
 
         root.clear()
 
+def ne_type_to_label(ne_type):
+    mapping = {
+        "PRS": "PER",
+    }
+    return mapping.get(ne_type, ne_type)
 
-def name_type_to_ne_type(name_type):
+def name_type_to_label(name_type):
     mapping = {
         "inst": "ORG",
         "product": "OBJ",
         "other": "OTH",
         "place": "LOC",
-        "myth": "MYT",
-        "person": "PRS",
+        "myth": "PER",
+        "person": "PER",
         "event": "EVN",
         "work": "WRK",
-        "animal": "ANI",
+        "animal": "PER",
     }
     return mapping.get(name_type)
 
