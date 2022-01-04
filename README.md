@@ -59,15 +59,13 @@ To IOB2 format that looks like this:
 All name types are mapped to ne types, to produce the following set of existing tags (number of occurances within parentisis):
 
 * TME (25967) - Time unit
-* PRS (22874) - Person
+* PER (23617) - Person
 * LOC (12076) - Location
 * ORG (8224) - Organization
 * MSR (6061) - Meassurement
 * WRK (5055) - Work of art
 * OBJ (1085) - Object
-* EVN (642) - Event
-* ANI (464) - Animal
-* MYT (301) - Mythological
+* EVN (647) - Event
 
 ## Clarification on the SUC 3.0 License
 
