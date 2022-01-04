@@ -30,8 +30,6 @@ from collections import Counter
 import sys
 
 def parse(fp, skiptypes=[]):
-    types = Counter()
-
     root = None
     ne_prefix = ""
     ne_type = "O"
@@ -80,10 +78,8 @@ def parse(fp, skiptypes=[]):
 
             elif elem.tag == "w":
                 if name_type != "O" and name_type != "OTH":
-                    types[name_type] += 1
                     yield elem.text, name_prefix, name_type
                 elif ne_type != "O":
-                    types[ne_type] += 1
                     yield elem.text, ne_prefix, ne_type
                 else:
                     yield elem.text, "", "O"
@@ -96,7 +92,6 @@ def parse(fp, skiptypes=[]):
 
         root.clear()
 
-    print(types)
 
 def name_type_to_ne_type(name_type):
     mapping = {
