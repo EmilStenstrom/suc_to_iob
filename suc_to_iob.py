@@ -170,7 +170,7 @@ def main(args=None):
                 fout.write("%s\t%s%s\n" % (word, prefix, label))
 
     if args.stats_only:
-        fout.write(type_stats)
+        fout.write(str(type_stats) + "\n")
 
     fp.close()
     if args.outfile is not None:
