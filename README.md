@@ -56,20 +56,20 @@ To IOB2 format that looks like this:
 
 ## Available tags
 
-All name types are mapped to ne types, to produce the following set of existing tags (number of occurances within parentisis):
+All name types are mapped to ne types, to produce the following set of existing tags (number of occurrences within parenthesis):
 
 * TME (25967) - Time unit
 * PER (23617) - Person
 * LOC (12076) - Location
 * ORG (8224) - Organization
-* MSR (6061) - Meassurement
+* MSR (6061) - Measurement
 * WRK (5055) - Work of art
 * OBJ (1085) - Object
 * EVN (647) - Event
 
 ## Clarification on the SUC 3.0 License
 
-There are two versions of the SUC 3.0 corpus. One with the original texts mantained, and one with the sentences scrambled. The scrambled version has also been enhanced with automated tags using an automated tool (see below).
+There are two versions of the SUC 3.0 corpus. One with the original texts maintained, and one with the sentences scrambled. The scrambled version has also been enhanced with automated tags using an automated tool (see below).
 
 The license of the scrambled version is CC BY-SA, and trained models based on this corpus **does not need to be licensed the same way**.
 
@@ -116,7 +116,7 @@ This script parses both kinds of tags into one IOB file using the following heur
 6. If only `<ne>`, use `<ne>`
 7. If there are multiple types denoted by "/", as in "LOC/PRS", use the last type
 
-### Explaination
+### Explanation
 
 1. `<name>` is manually annotated, so safer to use when possible
 2. Many countries are annotated as institutions, but the automated tagging is correct, so use that one instead.
